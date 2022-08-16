@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Astutos.Randoman.Map;
 
-public class PlayerMovement : MonoBehaviour
+namespace Astutos.Randoman.Player
 {
-    // Start is called before the first frame update
-    void Start()
+    public class PlayerMovement : MonoBehaviour
     {
-        
+        [SerializeField] private MapManager _mapManager = null;
+
+
+        void Start()
+        {
+            int xCenter, yCenter;
+            _mapManager.GetMiddleOfGrid(out xCenter, out yCenter);
+            print(_mapManager.FindWalkableGridcell(xCenter,yCenter));
+        }
+
+        void Update()
+        {
+
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

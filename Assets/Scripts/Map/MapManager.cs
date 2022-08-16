@@ -7,11 +7,7 @@ namespace Astutos.Randoman.Map
 {
     public class MapManager : MonoBehaviour
     {
-        [Header("Grid Settings")]
-        [SerializeField] private int _gridWidth = 0;
-        [SerializeField] private int _gridHeight = 0;
-        [SerializeField] private float _cellSize = 0f;
-        [Range(0f, 1f)] [SerializeField] private float _obstacleRatio = 0.2f;
+        [SerializeField] private MapGridSettings _mapGridSettings;
         [Header("Grid Visuals")]
         [SerializeField] Transform _coinsParent;
         [SerializeField] Transform _wallsParent;
@@ -22,16 +18,17 @@ namespace Astutos.Randoman.Map
 
         private void Awake()
         {
-            _mapGrid = new MapGrid(_gridWidth,_gridHeight,_cellSize,-new Vector3(_gridWidth,_gridHeight)*_cellSize/2, _obstacleRatio);
+            _mapGridSettings.OriginPosition = -new Vector3(_mapGridSettings.Width, _mapGridSettings.Height) * _mapGridSettings.CellSize / 2;
+            _mapGrid = new MapGrid(_mapGridSettings);
 
             BuildMap();
         }
 
         private void BuildMap()
         {
-            for (int x = 0; x < _gridWidth; x++)
+            for (int x = 0; x < _mapGridSettings.Width; x++)
             {
-                for (int y = 0; y < _gridHeight; y++)
+                for (int y = 0; y < _mapGridSettings.Height; y++)
                 {
                     if (!_mapGrid.IsWalkable(x, y))
                     {
@@ -44,7 +41,56 @@ namespace Astutos.Randoman.Map
                 }
             }
         }
+
+        public void GetMiddleOfGrid(out int x, out int y)
+        {
+            x = Mathf.FloorToInt(_mapGridSettings.Width / 2);
+            y = Mathf.FloorToInt(_mapGridSettings.Height / 2);
+        }
+
+        public Vector3 FindWalkableGridcell(int xPreferred, int yPreferred)
+        {
+            int searchRadius = 1;
+            int searchCount = 0;
+            int x = xPreferred, y = yPreferred;
+
+            while (!_mapGrid.IsWalkable(x, y))
+            {
+
+                x = xPreferred;
+                y = yPreferred;
+                switch (searchCount)
+                {
+                    case 0:
+                        x += searchRadius;
+                        break;
+                    case 1:
+                        x -= searchRadius;
+                        break;
+                    case 2:
+                        y += searchRadius;
+                        break;
+                    case 3:
+                        y -= searchRadius;
+                        break;
+                    case 4:
+                        searchRadius++;
+                        searchCount = 0;
+                        break;
+                }
+                searchCount++;
+                if (x == _mapGridSettings.Width - 1 || x < 0
+                    || y < 0 || y == _mapGridSettings.Height - 1)
+                {
+                    Debug.LogError($"Preferred Coordinates {xPreferred} and {yPreferred} are most likely invalid!");
+                    break;
+                }
+            }
+            return _mapGrid.GetWorldPosition(x, y);
+        }
     }
+
+    
 
 }
 

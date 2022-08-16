@@ -380,10 +380,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d02e98b7f94144696891524cbc94f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridWidth: 25
-  _gridHeight: 25
-  _cellSize: 1
-  _obstacleRatio: 0.2
+  _mapGridSettings:
+    Width: 25
+    Height: 25
+    CellSize: 1
+    OriginPosition: {x: 0, y: 0, z: 0}
+    ObstacleRatio: 0.5
   _coinsParent: {fileID: 896663806}
   _wallsParent: {fileID: 976228468}
   _wallPrefab: {fileID: 7667973840425288732, guid: 0dac73ed7b7e8c247bf35ce27ab02246, type: 3}
@@ -494,6 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28176b0a1e4129746874aedf37b493db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mapManager: {fileID: 630379136}
 --- !u!4 &994629976
 Transform:
   m_ObjectHideFlags: 0
