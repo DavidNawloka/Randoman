@@ -88,6 +88,17 @@ namespace Astutos.Randoman.Map
             }
             return _mapGrid.GetWorldPosition(x, y);
         }
+        public MapGridSettings GetMapGridSettings()
+        {
+            return _mapGridSettings;
+        }
+
+        public Vector3 GetCenteredWorldPosition(Vector3 currentPosition)
+        {
+            int x, y;
+            _mapGrid.GetGridPosition(currentPosition, out x, out y);
+            return _mapGrid.GetWorldPosition(x, y);
+        }
     }
 
     

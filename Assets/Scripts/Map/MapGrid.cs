@@ -36,6 +36,13 @@ namespace Astutos.Randoman.Map
             return new Vector3(x, y) * _mapGridSettings.CellSize + _mapGridSettings.OriginPosition + new Vector3(_mapGridSettings.CellSize, _mapGridSettings.CellSize)/2;
         }
 
+        public void GetGridPosition(Vector3 worldPosition, out int x, out int y)
+        {
+            Vector3 gridPosition = (worldPosition - _mapGridSettings.OriginPosition - new Vector3(_mapGridSettings.CellSize, _mapGridSettings.CellSize) / 2) / _mapGridSettings.CellSize;
+            x = Mathf.RoundToInt(gridPosition.x);
+            y = Mathf.RoundToInt(gridPosition.y);
+        }
+
         public bool IsWalkable(int x, int y)
         {
             return gridArray[x, y];
